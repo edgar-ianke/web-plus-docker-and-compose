@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci --no-audit --no-fund
+RUN npm ci --no-audit --no-fund --legacy-peer-deps
 
 COPY . ./
 
@@ -16,13 +16,13 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci --omit=dev --no-audit --no-fund \
+RUN npm ci --omit=dev --no-audit --no-fund --legacy-peer-deps \
     && npm i -g pm2    
 
 COPY --from=builder /app/dist ./dist
 
 COPY ./ecosystem.config.js ./
 
-EXPOSE 3001
+EXPOSE 3000
 
 ENTRYPOINT [ "pm2-runtime", "start", "ecosystem.config.js" ]
